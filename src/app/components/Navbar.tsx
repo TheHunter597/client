@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 interface NavbarProps {}
 const Navbar: FunctionComponent<NavbarProps> = () => {
+  let [isPhoneUser, setIsPhoneUser] = useState(false);
   let [phoneNavActive, setPhoneNavActive] = useState(true);
 
   let sections = [
@@ -42,6 +43,7 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
         href={`#${section.toLowerCase().replaceAll(" ", "-")}`}
         onClick={() => {
           section === "Home" && typeof window ? window.scrollTo(0, 0) : "";
+          isPhoneUser ? setPhoneNavActive(false) : "";
         }}
       >
         {section}
@@ -49,8 +51,25 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
     );
   });
 
+  useEffect(() => {
+    let width = window.innerWidth;
+    addEventListener("resize", () => {
+      console.log(isPhoneUser);
+      console.log(width);
+
+      width = window.innerWidth;
+      width > 1020 ? setIsPhoneUser(false) : setIsPhoneUser(true);
+      isPhoneUser ? setPhoneNavActive(true) : setPhoneNavActive(false);
+    });
+    width > 1020 ? setIsPhoneUser(false) : setIsPhoneUser(true);
+    return addEventListener("resize", () => {
+      width = window.innerWidth;
+    });
+  });
+  console.log(isPhoneUser);
+
   return (
-    <nav className=" bg-white text-primary fixed top-0 w-full z-50 ">
+    <nav className=" bg-white text-primary fixed top-0 w-full z-50 px-4 lg:px-0">
       <div
         className="container mx-auto flex flex-row justify-between place-content-center 
         gap-4 py-4 items-center relative"
@@ -69,7 +88,8 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
           animate={phoneNavActive ? "active" : "inactive"}
         >
           <ul
-            className="flex flex-col lg:flex-row items-center justify-center gap-6 col-span-5 place-content-center font-thin 
+            className="flex flex-col lg:flex-row items-center justify-center 
+            gap-6 col-span-5 place-content-center font-thin 
             text-xl lg:text-tiny  "
           >
             {headers}
@@ -99,7 +119,7 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
         <div
           className="absolute right-0 lg:opacity-0"
           onClick={() => {
-            setPhoneNavActive((prev) => !prev);
+            isPhoneUser ? setPhoneNavActive((prev) => !prev) : "";
           }}
         >
           {!phoneNavActive ? (
