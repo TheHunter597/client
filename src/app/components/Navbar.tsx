@@ -109,6 +109,9 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
               <a
                 href="#no-clue-what-this-section-represents"
                 className="bg-yellow py-3 px-10 block z-10"
+                onClick={() => {
+                  isPhoneUser ? setPhoneNavActive((prev) => !prev) : "";
+                }}
               >
                 Get started
               </a>
