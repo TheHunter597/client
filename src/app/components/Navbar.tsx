@@ -27,7 +27,7 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
     },
     inactive: {
       x: -600,
-      y: -100,
+
       opacity: 0,
       transition: {
         duration: 0.8,
@@ -54,16 +54,15 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
   useEffect(() => {
     let width = window.innerWidth;
     addEventListener("resize", () => {
-      console.log(isPhoneUser);
-      console.log(width);
-
       width = window.innerWidth;
       width > 1020 ? setIsPhoneUser(false) : setIsPhoneUser(true);
-      isPhoneUser ? setPhoneNavActive(true) : setPhoneNavActive(false);
+      isPhoneUser ? setPhoneNavActive(false) : setPhoneNavActive(true);
     });
     width > 1020 ? setIsPhoneUser(false) : setIsPhoneUser(true);
-    return addEventListener("resize", () => {
+    return removeEventListener("resize", () => {
       width = window.innerWidth;
+      width > 1020 ? setIsPhoneUser(false) : setIsPhoneUser(true);
+      isPhoneUser ? setPhoneNavActive(false) : setPhoneNavActive(true);
     });
   });
   console.log(isPhoneUser);
@@ -84,7 +83,7 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
           w-full lg:w-3/4 lg:ml-auto lg:top-0 bg-white h-screen lg:h-auto 
           lg:bg-transparent`}
           variants={navAnimations}
-          initial="inactive"
+          initial="active"
           animate={phoneNavActive ? "active" : "inactive"}
         >
           <ul
